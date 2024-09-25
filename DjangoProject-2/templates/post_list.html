@@ -1,0 +1,38 @@
+{% extends 'menu.html' %}
+{% block navigation %}
+    <nav class="nav nav-masthead justify-content-center">
+        <a class="nav-link active" href="/main">Главная страница</a>
+        <a class="nav-link" href="/shop">Магазин игр</a>
+        <a class="nav-link" href="/cart">Корзина</a>
+        <a class="nav-link" href="/posts">Посты</a>
+    </nav>
+{% endblock %}
+{% block content %}
+    <h1>Список постов</h1>
+    {% for post in page_obj %}
+        {{ post.title }} ({{ post.data }})
+        <p>{{ post.post }}</p>
+        {% empty %}
+            <p>Нет постов.</p>
+    {% endfor %}
+    <!-- показываем пагинатор -->
+    <div class="pagination">
+        <p>Страницы:</p>
+            {% if page_obj.has_previous %}
+                <a href="?page=1">◀️◀️</a>
+                <a href="?page={{ page_obj.previous_page_number }}">Previous</a>
+            {% endif %}
+            {{ page_obj.number }}
+            <select name="page">
+                {% for page_number in page_obj.paginator.page_range %}
+                    <option value="{{ page_number }}">
+                        <a href="?page={{ page_obj.number }}">{{ page_number }}</a>
+                    </option>
+                {% endfor %}
+            </select>
+            {% if page_obj.has_next %}
+                <a href="?page={{ page_obj.next_page_number }}">Next</a>
+                <a href="?page={{ page_obj.paginator.num_pages }}">>▶️▶️</a>
+            {% endif %}
+    </div>
+{% endblock %}
